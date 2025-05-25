@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Логи отправки{% endblock %}
+{% block content %}
+<h1>Логи отправки</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Время</th>
+            <th>Email</th>
+            <th>Статус</th>
+            <th>Сообщение</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for log in logs %}
+        <tr>
+            <td>{{ log.timestamp }}</td>
+            <td>{{ log.recipient }}</td>
+            <td>{{ log.status }}</td>
+            <td>{{ log.message }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

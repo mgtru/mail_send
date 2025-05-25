@@ -1,0 +1,20 @@
+{
+  "active": {
+    "smtp_server": "smtp.yandex.ru",
+    "smtp_port": 465,
+    "email": "welldone399@yandex.net",
+    "password": "xpvsepylevfsqmbn",
+    "provider": "yandex",
+    "id": "2fe1411e-7c16-422a-89f5-644b8958953f"
+  },
+  "accounts": [
+    {
+      "smtp_server": "smtp.yandex.ru",
+      "smtp_port": 465,
+      "email": "welldone399@yandex.net",
+      "password": "xpvsepylevfsqmbn",
+      "provider": "yandex",
+      "id": "2fe1411e-7c16-422a-89f5-644b8958953f"
+    }
+  ]
+}

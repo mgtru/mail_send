@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Быстрая рассылка{% endblock %}
+{% block content %}
+<h1 class="mb-4">Рассылщик писем</h1>
+
+<form method="post" enctype="multipart/form-data" class="col-lg-6 col-md-8">
+
+  <div class="mb-3">
+    <label class="form-label">Загрузите Excel-файл</label>
+    <input class="form-control" type="file" name="excel" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Выберите почтового провайдера<br>
+      <small class="text-muted">(Если настройки заданы в админке, параметр не используется)</small>
+    </label>
+    <select name="provider" class="form-select">
+      <option value="mail.ru">mail.ru</option>
+      <option value="yandex">yandex</option>
+      <option value="gmail">gmail</option>
+    </select>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label">Столбец с e-mail (буквой, например A)</label>
+      <input name="col_email" class="form-control">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Столбец с ФИО (буквой, например B)</label>
+      <input name="col_name" class="form-control">
+    </div>
+  </div>
+
+  <div class="row g-3 mt-0">
+    <div class="col-md-6">
+      <label class="form-label">Начать с строки (номер, начиная с 1)</label>
+      <input name="start_row" type="number" class="form-control">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Количество писем для отправки</label>
+      <input name="limit" type="number" class="form-control">
+    </div>
+  </div>
+
+  <div class="mb-3 mt-3">
+    <label class="form-label">Тема письма</label>
+    <input name="subject" class="form-control">
+  </div>
+
+  <div class="mb-4">
+    <label class="form-label">Текст письма
+      <small class="text-muted">(используйте <code>{FIO}</code> для полного ФИО и <code>{IO}</code> для имени и отчества)</small>
+    </label>
+    <textarea name="body" rows="6" class="form-control"></textarea>
+  </div>
+
+  <!-- кнопки -->
+  <div class="d-flex gap-3 mb-5">
+    <button type="button" class="btn btn-outline-secondary" id="previewTemplateBtn">
+      Просмотреть шаблон
+    </button>
+    <button class="btn btn-primary" type="submit">Начать рассылку</button>
+  </div>
+</form>
+
+<!-- модал предпросмотра шаблона (переиспользуем тот же preview.js) -->
+<div class="modal fade" id="tmplPreviewModal" tabindex="-1">
+ <div class="modal-dialog modal-lg">
+  <div class="modal-content">
+   <div class="modal-header"><h5 class="modal-title">Предпросмотр письма</h5>
+    <button class="btn-close" data-bs-dismiss="modal"></button></div>
+   <div class="modal-body">
+     <h6 class="text-muted">Тема</h6>
+     <p id="tmplSubj" class="border p-2 bg-light"></p>
+     <h6 class="text-muted">Тело</h6>
+     <div id="tmplBody" class="border p-3"></div>
+   </div>
+  </div>
+ </div>
+</div>
+{% endblock %}
+

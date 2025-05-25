@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Аккаунты{% endblock %}
+{% block content %}
+<h1>SMTP-аккаунты</h1>
+<a class="btn btn-primary mb-3" href="{{ url_for('accounts.new_account') }}">➕ Новый</a>
+<table class="table table-sm table-striped"><tr><th>Email</th><th>Провайдер</th><th></th></tr>
+{% for a in accounts %}
+<tr>
+  <td>{{ a.email }}</td><td>{{ a.provider }}</td>
+  <td><a class="btn btn-sm btn-danger" href="{{ url_for('accounts.del_account', acc_id=a.id) }}">Удалить</a></td>
+</tr>{% endfor %}
+</table>
+{% endblock %}

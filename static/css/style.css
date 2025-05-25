@@ -1,0 +1,20 @@
+body {
+    background-color: #f8f9fa;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+.container {
+    margin-bottom: 200px; /* или 200px, сколько нужно, чтобы кнопка не уезжала за край */
+}
+
+body{
+  background:#f8f9fa;
+  padding-top:4.5rem;          /* чтобы контент не «залезал» под fixed-navbar */
+}
+
+.form-control, .form-select{ min-height:42px; }
+
+.navbar-brand{ font-weight:600; }
+

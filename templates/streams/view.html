@@ -1,0 +1,33 @@
+{% extends "base.html" %}{% block title %}{{stream.title}}{% endblock %}
+{% block content %}
+<h2>{{ stream.title }}</h2>
+<div>Статус: <span id="st">{{ stream.status }}</span>,
+отправлено: <span id="cnt">{{ stream.sent }}</span>/{{ stream.total }}</div>
+
+{% if stream.status=="running" %}
+<div class="progress my-2"><div id="bar" class="progress-bar progress-bar-striped progress-bar-animated"
+style="width:{{ stream.total and (100*stream.sent/stream.total)|round(1) or 0 }}%"></div></div>
+<script>
+setInterval(()=>fetch("{{ url_for('streams.progress', sid=stream.id) }}")
+.then(r=>r.json()).then(d=>{
+  st.textContent=d.status; cnt.textContent=d.sent;
+  bar.style.width=(d.total?100*d.sent/d.total:0)+"%";
+}),3000);
+</script>
+{% endif %}
+
+<p>
+{% if stream.status=="running" %}
+  <a class="btn btn-danger" href="{{ url_for('streams.stop', sid=stream.id) }}">⏹ Стоп</a>
+{% else %}
+  <a class="btn btn-success" href="{{ url_for('streams.start', sid=stream.id) }}">▶️ Старт</a>
+{% endif %}
+  <a class="btn btn-outline-secondary" href="{{ url_for('streams.logs', sid=stream.id) }}">Логи</a>
+</p>
+
+<h5>Записи ({{ rows|length }})</h5>
+<table class="table table-sm table-bordered">
+<thead><tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr></thead>
+{% for r in rows %}<tr>{% for c in r %}<td>{{c}}</td>{% endfor %}</tr>{% endfor %}
+</table>
+{% endblock %}

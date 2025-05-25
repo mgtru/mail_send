@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Новый аккаунт{% endblock %}
+{% block content %}
+<h1>Добавить SMTP-ящик</h1>
+<form method="post">
+  <div class="mb-2">
+    <label class="form-label">Провайдер</label>
+    <select name="provider" class="form-select">
+      {% for p in providers %}<option value="{{p}}">{{p}}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="mb-2"><label>Email</label><input class="form-control" name="email" required></div>
+  <div class="mb-3"><label>Пароль приложения</label><input class="form-control" name="password" required></div>
+  <button class="btn btn-success">Сохранить</button>
+</form>
+{% endblock %}

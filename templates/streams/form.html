@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Создать поток{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Создать поток</h1>
+
+<form class="col-lg-7" method="post" enctype="multipart/form-data">
+  <!-- Название -->
+  <div class="mb-3">
+    <label class="form-label">Название</label>
+    <input class="form-control" name="title" required>
+  </div>
+
+  <!-- Excel -->
+  <div class="mb-3">
+    <label class="form-label">Excel (.xlsx)</label>
+    <input type="file" name="excel" class="form-control" accept=".xlsx,.xlsm" required>
+  </div>
+
+  <!-- Аккаунт -->
+  <div class="mb-3">
+    <label class="form-label">Аккаунт-отправитель</label>
+    <select name="account" class="form-select" required>
+      {% for a in accounts %}
+        <option value="{{ a.id }}">{{ a.email }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <!-- Фильтр + пауза -->
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label">Фильтр по окончанию (F)</label>
+      <select id="filt" name="filter" class="form-select">
+        <option value="all">любой</option>
+        <option value="45">45 дней</option>
+        <option value="15">15 дней</option>
+        <option value="3">3 дня</option>
+        <option value="0">0 дней (сегодня)</option>
+        <option value="custom">Свой…</option>
+      </select>
+      <input id="customDays" type="number" class="form-control mt-2 d-none" placeholder="Введите число дней">
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Пауза (сек.)</label>
+      <input type="number" name="pause" class="form-control" value="10" min="1" required>
+    </div>
+  </div>
+
+  <!-- Кнопки предпросмотра -->
+  <div class="my-3 d-flex gap-3">
+    <button type="button" id="previewRowsBtn" class="btn btn-outline-secondary btn-sm">Показать строки</button>
+    <button type="button" id="previewTemplateBtn" class="btn btn-outline-secondary btn-sm">Предпросмотр шаблона</button>
+  </div>
+
+  <!-- Тема / тело -->
+  <div class="mb-3">
+    <label class="form-label">Тема</label>
+    <input name="subject" class="form-control" placeholder="Документ истекает через {expiry_days} дн." required>
+  </div>
+  <div class="mb-4">
+    <label class="form-label">HTML-тело</label>
+    <textarea name="body" rows="7" class="form-control" placeholder="Здравствуйте, {B}!<br>Ваш документ действует до {F}." required></textarea>
+    <small class="text-muted">Плейсхолдеры {A}…{F} и {expiry_days}</small>
+  </div>
+
+  <button class="btn btn-success">Создать</button>
+</form>
+
+<!-- Modal – строки -->
+<div class="modal fade" id="rowsPreviewModal" tabindex="-1">
+ <div class="modal-dialog modal-lg modal-dialog-scrollable">
+  <div class="modal-content">
+   <div class="modal-header">
+     <h5 class="modal-title">Строки (<span id="rowsCnt">0</span>)</h5>
+     <button class="btn-close" data-bs-dismiss="modal"></button>
+   </div>
+   <div class="modal-body">
+     <table class="table table-sm table-bordered">
+       <thead class="table-light"><tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr></thead>
+       <tbody id="rowsPreviewBody"></tbody>
+     </table>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- Modal – шаблон -->
+<div class="modal fade" id="tmplPreviewModal" tabindex="-1">
+ <div class="modal-dialog modal-lg">
+  <div class="modal-content">
+   <div class="modal-header">
+     <h5 class="modal-title">Предпросмотр письма</h5>
+     <button class="btn-close" data-bs-dismiss="modal"></button>
+   </div>
+   <div class="modal-body">
+     <h6 class="text-muted">Тема</h6><p id="tmplSubj" class="border p-2 bg-light"></p>
+     <h6 class="text-muted">Тело</h6><div id="tmplBody" class="border p-3"></div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- показать/скрыть поле «Свой … дней» -->
+<script>
+document.getElementById('filt').addEventListener('change', e=>{
+  const c = document.getElementById('customDays');
+  if (e.target.value === 'custom') { c.classList.remove('d-none'); c.name='filter'; }
+  else { c.classList.add('d-none'); c.removeAttribute('name'); c.value=''; }
+});
+</script>
+{% endblock %}
+
+
